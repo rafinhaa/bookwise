@@ -1,4 +1,4 @@
-import { nunito } from "@/pages/_app";
+import { nunito } from "@/pages/_app.page";
 import { globalCss } from "./";
 
 export const globalStyles = globalCss({
