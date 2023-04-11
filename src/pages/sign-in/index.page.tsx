@@ -14,7 +14,7 @@ const SignIn = () => {
         <Typography.Text color="gray-200">
           Faça seu login ou acesse como visitante.
         </Typography.Text>
-        <AuthButtons />
+        <AuthButtons canGuest />
       </SignInSection>
     </SingInContainer>
   );
