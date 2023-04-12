@@ -6,11 +6,13 @@ import { HomeContainer } from "./styles";
 
 import type { NextPageWithLayout } from "../_app.page";
 import { LatestRatings } from "./components/LatestRatings";
+import { PopularBooks } from "./components/PopularBooks";
 
 const Home: NextPageWithLayout = () => {
   return (
     <HomeContainer>
       <LatestRatings />
+      <PopularBooks />
     </HomeContainer>
   );
 };
