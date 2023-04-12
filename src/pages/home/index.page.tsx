@@ -5,9 +5,14 @@ import { DefaultLayout } from "@/layouts/DefaultLayout";
 import { HomeContainer } from "./styles";
 
 import type { NextPageWithLayout } from "../_app.page";
+import { LatestRatings } from "./components/LatestRatings";
 
 const Home: NextPageWithLayout = () => {
-  return <HomeContainer></HomeContainer>;
+  return (
+    <HomeContainer>
+      <LatestRatings />
+    </HomeContainer>
+  );
 };
 
 Home.getLayout = (page: ReactElement) => {
