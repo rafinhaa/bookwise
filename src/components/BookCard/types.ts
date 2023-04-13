@@ -5,6 +5,11 @@ export type BookWithAvgRating = Book & {
   alreadyRead: boolean;
 };
 
+export type BookWithAvgRatingApi = Omit<BookWithAvgRating, "alreadyRead"> & {
+  alreadyRead: string;
+  ratings: number;
+};
+
 export type BookCardProps = {
   book: BookWithAvgRating;
   size?: "md" | "lg";
