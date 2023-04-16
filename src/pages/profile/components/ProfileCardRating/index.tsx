@@ -1,0 +1,58 @@
+import Link from "next/link";
+
+import { getTimeDistanceFromNowInTimeZoneBr } from "@/util/getTimeDistanceFromNowInTimeZoneBr";
+
+import { RatingStars } from "@/components/RatingStars";
+import { Typography } from "@/components/Typography";
+
+import {
+  BookDetails,
+  BookImage,
+  CardContent,
+  ProfileCardRatingContainer,
+} from "./styles";
+
+import { ProfileCardRatingProps } from "./types";
+
+export const ProfileRatingCard = ({ rating }: ProfileCardRatingProps) => {
+  const distance = getTimeDistanceFromNowInTimeZoneBr(
+    rating.created_at.toString()
+  );
+
+  return (
+    <ProfileCardRatingContainer>
+      <Typography.Text size="sm" color="gray-300">
+        {distance}
+      </Typography.Text>
+
+      <CardContent>
+        <BookDetails>
+          <Link
+            style={{ display: "flex" }}
+            href={`/explore?book=${rating.bookId}`}
+          >
+            <BookImage
+              src={rating.cover_url}
+              alt={rating.name}
+              width={98}
+              height={134}
+            />
+          </Link>
+          <section>
+            <div>
+              <Typography.Heading size="sm">{rating.name}</Typography.Heading>
+              <Typography.Text size="sm" color="gray-400">
+                {rating.author}
+              </Typography.Text>
+            </div>
+
+            <RatingStars rating={rating.rate} />
+          </section>
+        </BookDetails>
+        <Typography.Text size="sm" color="gray-300">
+          {rating.description}
+        </Typography.Text>
+      </CardContent>
+    </ProfileCardRatingContainer>
+  );
+};
