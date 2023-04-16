@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { buildNextAuthOptions } from "../../auth/[...nextauth].api";
+import { bookIdSchema, rateBodySchema } from "../../schemas";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,10 +19,10 @@ export default async function handler(
   if (!session) return res.status(401).end();
 
   try {
-    const bookId = String(req.query.bookId);
     const userId = String(session?.user?.id!);
 
-    const { description, rate } = req.body;
+    const { bookId } = bookIdSchema.parse(req.query);
+    const { description, rate } = rateBodySchema.parse(req.body);
 
     const userAlreadyRated = await prisma.rating.findFirst({
       where: {
@@ -36,7 +37,7 @@ export default async function handler(
       });
     }
 
-    await prisma.rating.create({
+    const bookRating = await prisma.rating.create({
       data: {
         book_id: bookId,
         description,
@@ -44,6 +45,8 @@ export default async function handler(
         user_id: userId,
       },
     });
+
+    if (!bookRating) throw new Error();
 
     return res.status(201).end();
   } catch (error) {
