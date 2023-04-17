@@ -1,6 +1,9 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { getTimeDistanceFromNowInTimeZoneBr } from "@/util/getTimeDistanceFromNowInTimeZoneBr";
+import {
+  getDetailedTimeInTimeZoneBr,
+  getTimeDistanceFromNowInTimeZoneBr,
+} from "@/util/dateAndTimeUtils";
 
 import { RatingStars } from "@/components/RatingStars";
 import { Typography } from "@/components/Typography";
@@ -13,6 +16,10 @@ import { UserRatingCardProps } from "./types";
 export const UserRatingCard = ({ rating }: UserRatingCardProps) => {
   const { data: session } = useSession();
   const distance = getTimeDistanceFromNowInTimeZoneBr(
+    rating.created_at.toString()
+  );
+
+  const detailedHour = getDetailedTimeInTimeZoneBr(
     rating.created_at.toString()
   );
 
@@ -29,7 +36,7 @@ export const UserRatingCard = ({ rating }: UserRatingCardProps) => {
             <Typography.Heading size="xs">
               {rating.user.name}
             </Typography.Heading>
-            <Typography.Text size="sm" color="gray-400">
+            <Typography.Text size="sm" color="gray-400" title={detailedHour}>
               {distance}
             </Typography.Text>
           </div>

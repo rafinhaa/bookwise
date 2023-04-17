@@ -11,9 +11,12 @@ import {
 } from "./styles";
 
 import { ProfileDetailsProps } from "./types";
+import { getDetailedTimeInTimeZoneBr } from "@/util/dateAndTimeUtils";
 
 export const ProfileDetails = ({ info, user }: ProfileDetailsProps) => {
   const memberSinceYear = new Date(user.created_at).getFullYear();
+
+  const detailedDate = getDetailedTimeInTimeZoneBr(user.created_at);
 
   return (
     <ProfileDetailsContainer>
@@ -22,7 +25,7 @@ export const ProfileDetails = ({ info, user }: ProfileDetailsProps) => {
         <Typography.Heading size="md" css={{ marginTop: 20 }}>
           {user.name}
         </Typography.Heading>
-        <Typography.Text size="sm" color="gray-400">
+        <Typography.Text size="sm" color="gray-400" title={detailedDate}>
           membro desde {memberSinceYear}
         </Typography.Text>
       </UserInfo>

@@ -5,7 +5,10 @@ import { Avatar } from "@/components/Avatar";
 import { Typography } from "@/components/Typography";
 import { RatingStars } from "@/components/RatingStars";
 
-import { getTimeDistanceFromNowInTimeZoneBr } from "@/util/getTimeDistanceFromNowInTimeZoneBr";
+import {
+  getDetailedTimeInTimeZoneBr,
+  getTimeDistanceFromNowInTimeZoneBr,
+} from "@/util/dateAndTimeUtils";
 
 import {
   BookContent,
@@ -29,6 +32,10 @@ export const RatingCard = ({
     rating.created_at.toString()
   );
 
+  const detailedHour = getDetailedTimeInTimeZoneBr(
+    rating.created_at.toString()
+  );
+
   const {
     truncatedText: bookSummary,
     toggleShowMore,
@@ -45,7 +52,7 @@ export const RatingCard = ({
             </Link>
             <div>
               <Typography.Text>{rating.user.name}</Typography.Text>
-              <Typography.Text size="sm" color="gray-400">
+              <Typography.Text size="sm" color="gray-400" title={detailedHour}>
                 {distance}
               </Typography.Text>
             </div>

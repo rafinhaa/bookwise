@@ -1,6 +1,9 @@
 import Link from "next/link";
 
-import { getTimeDistanceFromNowInTimeZoneBr } from "@/util/getTimeDistanceFromNowInTimeZoneBr";
+import {
+  getDetailedTimeInTimeZoneBr,
+  getTimeDistanceFromNowInTimeZoneBr,
+} from "@/util/dateAndTimeUtils";
 
 import { RatingStars } from "@/components/RatingStars";
 import { Typography } from "@/components/Typography";
@@ -19,9 +22,13 @@ export const ProfileRatingCard = ({ rating }: ProfileCardRatingProps) => {
     rating.created_at.toString()
   );
 
+  const detailedHour = getDetailedTimeInTimeZoneBr(
+    rating.created_at.toString()
+  );
+
   return (
     <ProfileCardRatingContainer>
-      <Typography.Text size="sm" color="gray-300">
+      <Typography.Text size="sm" color="gray-300" title={detailedHour}>
         {distance}
       </Typography.Text>
 
