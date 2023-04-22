@@ -28,22 +28,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         b.*, array_agg(c.name) as category_name, 
         AVG(r.rate) as avg_rating,
         CAST(COUNT(DISTINCT r.user_id) as VARCHAR) as ratings,
-        CAST(EXISTS (SELECT 1 FROM Ratings r2 WHERE r2.book_id = b.id AND r2.user_id = ${userId}) as VARCHAR) as alreadyRead
+        EXISTS (SELECT 1 FROM Ratings r2 WHERE r2.book_id = b.id AND r2.user_id = ${userId}) as already_read
       FROM books b
       JOIN "CategoriesOnBooks" cob ON cob.book_id = b.id
       JOIN categories c ON c.id = cob."categoryId"
-      INNER JOIN Ratings r ON r.book_id = b.id
+      LEFT JOIN Ratings r ON r.book_id = b.id
       WHERE cob."categoryId" = COALESCE(${categoryId}, cob."categoryId")
         AND b.name LIKE COALESCE(${name}, b.name)
       GROUP BY b.id
-      ORDER BY avg_rating DESC
+      ORDER BY b.name ASC
     `;
 
     const parsedBooks = books.map((book) => ({
       ...book,
       ratings: Number(book.ratings),
       avgRating: book.avg_rating,
-      alreadyRead: book.alreadyRead === "1" ? true : false,
+      alreadyRead: book.already_read,
     }));
 
     res.status(200).json({ books: parsedBooks });

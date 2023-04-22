@@ -24,6 +24,8 @@ export const BookCard = ({ book, size = "md" }: BookCardProps) => {
     },
   }[size];
 
+  const bookAvgRating = book.avgRating ?? 0;
+
   return (
     <RatingsDialog bookId={book.id}>
       <BookCardContainer>
@@ -44,7 +46,7 @@ export const BookCard = ({ book, size = "md" }: BookCardProps) => {
             </Typography.Text>
           </div>
 
-          <RatingStars rating={book.avgRating} />
+          <RatingStars rating={bookAvgRating} />
         </BookDetails>
       </BookCardContainer>
     </RatingsDialog>
