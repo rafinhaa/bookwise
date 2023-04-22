@@ -1,16 +1,16 @@
 import { Book } from "@prisma/client";
 
 export type BookWithAvgRating = Book & {
-  avgRating: number;
+  avgRating: number | null;
   alreadyRead: boolean;
 };
 
 export type BookWithAvgRatingApi = Omit<
   BookWithAvgRating,
-  "alreadyRead" | "avgRating"
+  "alreadyRead" | "avgRating" | "alreadyRead"
 > & {
-  alreadyRead: string;
-  avg_rating: number;
+  already_read: string;
+  avg_rating: number | null;
   ratings: number;
 };
 

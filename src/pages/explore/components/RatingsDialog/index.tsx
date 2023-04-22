@@ -49,6 +49,7 @@ export const RatingsDialog = ({ bookId, children }: RatingsDialogProps) => {
   const ratingsLength = book?.ratings?.length ?? 0;
   const ratingsPlural = ratingsLength === 1 ? "avaliação" : "avaliações";
   const ratings = `${ratingsLength} ${ratingsPlural}`;
+  const bookAvgRating = book?.avgRating ?? 0;
 
   const categories =
     book?.categories?.map((x) => x?.category?.name)?.join(", ") ?? "";
@@ -98,7 +99,7 @@ export const RatingsDialog = ({ bookId, children }: RatingsDialogProps) => {
                     </div>
 
                     <div>
-                      <RatingStars rating={book.avgRating} size="md" />
+                      <RatingStars rating={bookAvgRating} size="md" />
                       <Typography.Text
                         color="gray-400"
                         size="sm"
