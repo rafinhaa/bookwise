@@ -5,8 +5,12 @@ export type BookWithAvgRating = Book & {
   alreadyRead: boolean;
 };
 
-export type BookWithAvgRatingApi = Omit<BookWithAvgRating, "alreadyRead"> & {
+export type BookWithAvgRatingApi = Omit<
+  BookWithAvgRating,
+  "alreadyRead" | "avgRating"
+> & {
   alreadyRead: string;
+  avg_rating: number;
   ratings: number;
 };
 
