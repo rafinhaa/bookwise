@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const popularBooks: BookWithAvgRatingApi[] = await prisma.$queryRaw`
     SELECT b.*, AVG(r.rate) as avg_rating
     FROM books b
-    LEFT JOIN ratings r ON b.id = r.book_id
+    INNER JOIN ratings r ON b.id = r.book_id
     GROUP BY b.id
     ORDER BY avg_rating DESC
     LIMIT 4;
