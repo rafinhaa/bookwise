@@ -88,7 +88,7 @@ const Explore: NextPageWithLayout = () => {
 
       <BooksGrid>
         {books?.map((book) => (
-          <BookCard key={book.id} book={book} />
+          <BookCard key={book.id} book={book} size="lg" />
         ))}
       </BooksGrid>
     </ExploreContainer>
