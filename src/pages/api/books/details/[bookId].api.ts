@@ -36,9 +36,9 @@ export default async function handler(
 
     if (!book) throw new Error();
 
-    const [bookAvg]: { avgRating: number }[] = await prisma.$queryRaw`
+    const [bookAvg]: { avg_rating: number }[] = await prisma.$queryRaw`
       SELECT
-        AVG(r.rate) as avgRating	
+        AVG(r.rate) as avg_rating	
       FROM books b
       INNER JOIN Ratings r ON r.book_id = b.id
       WHERE b.id = ${bookId}
@@ -68,7 +68,7 @@ export default async function handler(
     return res.json({
       book: {
         ...book,
-        avgRating: bookAvg.avgRating,
+        avgRating: bookAvg.avg_rating,
         canRate,
       },
     });

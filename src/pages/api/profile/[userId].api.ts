@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { ProfileInfo, ProfileUser } from "@/pages/profile/types";
 import { userIdSchema } from "../schemas";
+import { snakeToCamelCase } from "@/util/SnakeToCamel";
 
 export default async function handler(
   req: NextApiRequest,
@@ -38,17 +39,17 @@ export default async function handler(
 
     const [info]: ProfileInfo[] = await prisma.$queryRaw`
       SELECT
-        CAST(SUM(b.total_pages) AS VARCHAR) as readPages,
-        CAST(COUNT(DISTINCT b.id) AS VARCHAR) AS ratedBooks,
-        CAST(COUNT(DISTINCT b.author) AS VARCHAR) AS readAuthors,
+        CAST(SUM(b.total_pages) AS VARCHAR) as read_pages,
+        CAST(COUNT(DISTINCT b.id) AS VARCHAR) AS rated_books,
+        CAST(COUNT(DISTINCT b.author) AS VARCHAR) AS read_authors,
         ( 
-          SELECT c.name 
-          FROM CategoriesOnBooks cob 
-          INNER JOIN categories c ON c.id = cob.categoryId 
+          SELECT array_agg(c.name) as name
+          FROM "CategoriesOnBooks" cob 
+          INNER JOIN categories c ON c.id = cob."categoryId" 
           WHERE cob.book_id IN (
             SELECT book_id FROM ratings WHERE user_id = ${userId}
           )
-          GROUP BY cob.categoryId 
+          GROUP BY cob."categoryId" 
           ORDER BY COUNT(*) DESC 
           LIMIT 1
         ) AS mostReadCategory
@@ -60,7 +61,7 @@ export default async function handler(
     const profileData = {
       user,
       ratings,
-      info,
+      info: snakeToCamelCase(info),
     };
 
     return res.json({ profile: profileData });
