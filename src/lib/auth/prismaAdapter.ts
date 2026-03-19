@@ -1,13 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Adapter } from "next-auth/adapters";
 import { prisma } from "../prisma";
+import type {
+  Adapter,
+  AdapterUser,
+  AdapterAccount,
+} from "next-auth/adapters";
 
 export function PrismaAdapter(
   req: NextApiRequest,
   res: NextApiResponse
 ): Adapter {
   return {
-    async createUser(user) {
+    async createUser(user: AdapterUser) {
       const createdUser = await prisma.user.create({
         data: {
           name: user.name,
@@ -98,7 +102,7 @@ export function PrismaAdapter(
       };
     },
 
-    async linkAccount(account) {
+    async linkAccount(account: AdapterAccount) {
       await prisma.account.create({
         data: {
           user_id: account.userId,
