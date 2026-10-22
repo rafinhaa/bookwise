@@ -18,16 +18,16 @@ FROM node:20.19.0-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production
-
-COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/next.config.js ./next.config.js
+COPY --from=deps /app/node_modules ./node_modules
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && exec next start"]
+CMD ["sh", "-c", "node ./node_modules/prisma/build/index.js migrate deploy && exec node server.js"]
